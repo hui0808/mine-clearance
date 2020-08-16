@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>mine-clearance</title>
+    <script src="js/utils.js"></script>
+    <script src="js/main.js"></script>
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            background-color: #f9fafb;
+        }
+        .cell {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            font-family: fantasy;
+            width: 30px;
+            height: 30px;
+            border: 1px #eeeeee solid;
+            background-color: #dedede;
+        }
+
+        .cell:hover {
+            background-color: #c6c6bf;
+        }
+
+        .hide:hover {
+            background-color: #bebcbc;
+        }
+
+        .hide {
+            background-color: #888888;
+        }
+
+        .boom {
+            background-color: #fd7c83;
+        }
+
+        .peer {
+            background-color: #cac9c1;
+        }
+
+        .mark {
+            background-image: url("flat.png");
+            background-repeat: no-repeat;
+            transition: background-image 1s;
+        }
+
+        .finish {
+            background: #70e995;
+        }
+
+        .num1 {
+            color: #cc535d;
+        }
+
+        .num2 {
+            color: #478b09;
+        }
+
+        .num3 {
+            color: #765efa;
+        }
+
+        .num4 {
+            color: #d57d4a;
+        }
+
+        .num5 {
+            color: #8d714e;
+        }
+
+        .num6 {
+            color: #c851a4;
+        }
+
+        .num7 {
+            color: #4c8e99;
+        }
+
+        .num8 {
+            color: #ff1010;
+        }
+
+        .num9 {
+            color: black;
+        }
+
+        @keyframes out {
+            from {
+                top: -40%;
+            }
+            to {
+                top: 50%;
+            }
+        }
+
+        #id-content {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px black solid;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 500px;
+            width: 900px;
+            background: white;
+            animation: out 1s forwards;
+        }
+
+        #id-root {
+            position: relative;
+        }
+
+        #id-game {
+            display: inline-flex;
+            flex-direction: column;
+            height: max-content;
+            width: max-content;
+            border: 1px solid black;
+            user-select: none;
+        }
+
+        .row {
+            display: inline-flex;
+            flex-direction: row;
+            align-items: center;
+            align-content: center;
+        }
+
+        #id-main {
+            display: inline-flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #id-console {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            width: 200px;
+            height: 200px;
+        }
+
+        #id-reset {
+            font-size: 25px;
+            box-shadow: 2px 8px 8px -5px rgba(0,0,0,.3);
+        }
+
+        #id-mineNum {
+            height: 45px;
+            line-height: 49px;
+            font-size: 20px;
+        }
+
+        #id-result {
+            height: 45px;
+            line-height: 45px;
+            font-size: 20px;
+        }
+
+        #id-title {
+            font-variant: petite-caps;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="id-root"></div>
+    <div id="id-content">
+        <h1 id="id-title">Mine Clearance</h1>
+        <div id="id-main">
+            <div id="id-console">
+                <button id="id-reset">重新游戏</button>
+                <div id="id-mineNum"></div>
+                <div id="id-result"><p> </p></div>
+            </div>
+            <div id="id-game"></div>
+        </div>
+    </div>
+    <script>
+        const __main = function() {
+            window.oncontextmenu = function(e) {
+                // 取消默认的浏览器自带右键
+                e.preventDefault();
+            }
+            let game = Game.instance()
+        }
+
+        __main()
+    </script>
+</body>
+</html>
