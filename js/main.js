@@ -1,4 +1,8 @@
 class GameObject {
+    constructor() {
+        this.events = []
+    }
+
     static new(...args) {
         let i = new this(...args)
         // i.main = this.main
@@ -14,8 +18,15 @@ class GameObject {
     debug() {
     }
 
-    destory() {
+    listener(element, type, callback) {
+        this.events.push([element, type, callback])
+        element.addEventListener(type, callback)
+    }
 
+    destory() {
+        for (let [element, type, callback] of this.events) {
+            element.removeEventListener(type, callback)
+        }
     }
 }
 
@@ -24,10 +35,8 @@ class Game extends GameObject {
         super()
         this.fps = 30
         this.scene = null
+        this.listener(e('#id-reset'), 'click', event => this.replaceScene(Scene))
         this.runWithScene(Scene)
-        e('#id-reset').onclick = event => {
-            this.replaceScene(Scene)
-        }
     }
 
     static instance(...args) {
@@ -42,8 +51,6 @@ class Game extends GameObject {
 
     runloop() {
         this.update()
-        // debug
-        // this.debug()
 
         // next run loop
         setTimeout(() => {
@@ -52,7 +59,7 @@ class Game extends GameObject {
     }
 
     runWithScene(scene) {
-        this.scene = Scene.new(this)
+        this.scene = scene.new(this)
         // 开始运行程序
         setTimeout(() => {
             this.runloop()
@@ -210,9 +217,9 @@ class Scene extends GameObject {
     }
 
     register() {
-        this.mouseup = bindEventDelegate('#id-game', 'mouseup',
-            'cell', event => {
-                let target = event.target
+        this.listener(e('#id-game'), 'mouseup', event => {
+            let target = event.target
+            if (target.classList.contains('cell')) {
                 let grid = this.getGridFormElement(target)
                 if (event.button === 2) {
                     if (grid.hide && this.remainMines > 0) {
@@ -222,10 +229,11 @@ class Scene extends GameObject {
                 } else if (event.button === 0) {
                     this.peerAroundGrids(grid, false)
                 }
-            })
-        this.mousedown = bindEventDelegate('#id-game', 'mousedown',
-            'cell', event => {
-                let target = event.target
+            }
+        })
+        this.listener(e('#id-game'), 'mousedown', event => {
+            let target = event.target
+            if (target.classList.contains('cell')) {
                 let grid = this.getGridFormElement(target)
                 if (event.button === 0) {
                     // 左键
@@ -243,7 +251,8 @@ class Scene extends GameObject {
                         log('peer', grid)
                     }
                 }
-            })
+            }
+        })
     }
 
     expand(x, y) {
@@ -320,13 +329,6 @@ class Scene extends GameObject {
                 this.game.replaceScene(Win)
             }
         }
-    }
-
-    destory() {
-        super.destory();
-        let s = e('#id-game')
-        s.removeEventListener('mouseup', this.mouseup)
-        s.removeEventListener('mousedown', this.mousedown)
     }
 }
 
