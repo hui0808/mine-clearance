@@ -194,11 +194,3 @@ const aroundCoordinate = function(x, y, h, w) {
     )
     return array
 }
-
-// a = [[1, 2], [3, 4]]
-// b = a[0]
-// log(includes(b, a))
-// c = 'sdhfsshfdjksdhoihweoihfioweifoj'
-// d = 'sdhfsshfdjksdhoihweoihfioweifoj'
-//
-// log(Object.is(c, d))
