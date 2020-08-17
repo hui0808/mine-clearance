@@ -4,9 +4,7 @@ class GameObject {
     }
 
     static new(...args) {
-        let i = new this(...args)
-        // i.main = this.main
-        return i
+        return new this(...args)
     }
 
     init() {
@@ -162,8 +160,7 @@ class Scene extends GameObject {
 
     getGridElement(x, y) {
         // 获得(x, y)对应格子的元素
-        let r = e(`[x="${x}"][y="${y}"]`)
-        return r
+        return e(`[x="${x}"][y="${y}"]`)
     }
 
     aroundCoordinate(x, y) {
@@ -309,7 +306,7 @@ class Scene extends GameObject {
                 e.classList.toggle('peer', grid.peer)
                 e.classList.toggle('boom', grid.boom)
                 if (!grid.hide && grid.num !== 0) {
-                    if (e.innerHTML === '') {
+                    if (grid.num !== 9) {
                         e.innerHTML = grid.num
                     }
                     e.classList.add(`num${grid.num}`)
@@ -320,7 +317,6 @@ class Scene extends GameObject {
             if (this.checkComplete()) {
                 for (let mine of this.mines) {
                     let e = this.getGridElement(mine.x, mine.y)
-                    e.innerHTML = mine.num
                     e.classList.add(`num${mine.num}`)
                     e.classList.add('finish')
                     e.classList.remove('hide')
