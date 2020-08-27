@@ -33,8 +33,9 @@ class Game extends GameObject {
         super()
         this.fps = 30
         this.scene = null
+        this.images = images
         this.listener(e('#id-reset'), 'click', event => this.replaceScene(Scene))
-        this.runWithScene(Scene)
+        this.preload(() => this.runWithScene(Scene))
     }
 
     static instance(...args) {
@@ -42,15 +43,12 @@ class Game extends GameObject {
         return this.i
     }
 
-    // update
     update() {
         this.scene.update()
     }
 
     runloop() {
         this.update()
-
-        // next run loop
         setTimeout(() => {
             this.runloop()
         }, 1000 / this.fps)
@@ -58,7 +56,6 @@ class Game extends GameObject {
 
     runWithScene(scene) {
         this.scene = scene.new(this)
-        // 开始运行程序
         setTimeout(() => {
             this.runloop()
         }, 1000 / this.fps)
@@ -70,6 +67,26 @@ class Game extends GameObject {
         this.scene.destory()
         delete this.scene
         this.scene = s
+    }
+
+    preload(callback) {
+        let loads = 0
+        let names = Object.keys(this.images)
+        log('images', this.images)
+        if (names.length === 0) callback && callback()
+        for (let key of names) {
+            let path = this.images[key]
+            let img = imageFromPath(path)
+            img.onload = () => {
+                log(img)
+                this.images[key] = img
+                loads++
+                if (loads === names.length) {
+                    log('load images', this.images)
+                    callback && callback()
+                }
+            }
+        }
     }
 }
 

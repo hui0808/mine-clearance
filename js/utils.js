@@ -174,8 +174,14 @@ const range = function(start, end, step = 1) {
 
 function ranint(n, m) {
     // [n, m) 随机范围
-    let r = Math.floor(Math.random() * (m - n) + n);
-    return r;
+    let r = Math.floor(Math.random() * (m - n) + n)
+    return r
+}
+
+const imageFromPath = function(path) {
+    let img = new Image()
+    img.src = path
+    return img
 }
 
 const aroundCoordinate = function(x, y, h, w) {
